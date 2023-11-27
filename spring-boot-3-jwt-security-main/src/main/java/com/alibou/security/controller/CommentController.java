@@ -1,10 +1,16 @@
 package com.alibou.security.controller;
 
 import com.alibou.security.entity.ExerciseCommentEntity;
+import com.alibou.security.mapstruct.dto.CommentDto;
+import com.alibou.security.request.PostCommentRequest;
 import com.alibou.security.service.CommentService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -19,14 +25,22 @@ public class CommentController {
         this.service = service;
     }
 
-    @PostMapping("/post")
-    public ResponseEntity<?> postReview( @RequestBody @Valid ExerciseCommentEntity entity){
 
-        service.postReview(entity);
+    @GetMapping("/{ExerciseId}")
+    public ResponseEntity<List<CommentDto>> getExerciseComments(@PathVariable @Valid Long ExerciseId){
+        return ResponseEntity.ok(service.getExerciseComments(ExerciseId));
 
-        return ResponseEntity.accepted().build();
     }
+    @PostMapping("/post")
+    public ResponseEntity<?> postComment(@RequestBody @Valid PostCommentRequest entity,
+                                         Authentication authentication
+                                         ) {
 
+
+
+        return service.postReview(entity, authentication);
+
+    }
 
 
 }

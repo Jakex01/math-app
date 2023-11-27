@@ -14,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,22 +44,11 @@ public class ExerciseService {
     }
 
 
-    public Optional<ExerciseEntity> findByIdExercise(Long id) {
+    public Optional<ExerciseDto> findByIdExercise(Long id) {
 
-
-        return Optional
-                .ofNullable(exerciseRepository
+        return exerciseRepository
                         .findById(id)
-                        .map(exerciseEntity -> {
-                            exerciseEntity.setStart_time(Instant.now());
-                            exerciseRepository.save(exerciseEntity);
-
-                            exerciseEntityObjectsValidator.validate(exerciseEntity);
-
-                            return exerciseEntity;
-                })
-                        .orElseThrow(() -> new ExerciseNotFoundException("Exercise not found with id: " + id)));
-
+                .map(MapStructMapper.INSTANCE::exerciseToExerciseDto);
     }
 
     public Set<ExerciseCommentEntity> exerciseCommentEntities(Long id){
@@ -73,23 +60,6 @@ public class ExerciseService {
 
     }
 
-    public void setExerciseEndTime(Long id){
-
-        exerciseRepository
-                .findById(id)
-                .ifPresent(exercise -> {
-                            exercise.setEnd_time(Instant.now());
-                            exercise.setDuration(Duration
-                                    .between(exercise.getStart_time()
-                                            ,exercise.getEnd_time())
-                                    .getSeconds());
-
-                            exerciseRepository.save(exercise);
-                        }
-                );
-
-
-    }
 
     private Specification<ExerciseEntity> createExerciseSpecification(String level, String category) {
 

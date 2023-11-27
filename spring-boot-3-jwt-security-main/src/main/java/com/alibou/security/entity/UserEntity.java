@@ -34,11 +34,11 @@ public class UserEntity implements UserDetails {
   @Id
   @GeneratedValue
   private Integer id;
-  @NotBlank
+  @NotBlank(message = "First name is mandatory")
   private String firstname;
-  @NotBlank
+  @NotBlank(message = "Lastname is mandatory")
   private String lastname;
-  @NotBlank
+  @NotBlank(message = "Email is mandatory")
   @Email
   private String email;
   @NotBlank
@@ -49,6 +49,7 @@ public class UserEntity implements UserDetails {
 
   private boolean mfaEnabled;
   private String secret;
+
 
   @CreatedDate
   @Column(
@@ -66,11 +67,6 @@ public class UserEntity implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
-
-//  @OneToOne(mappedBy = "user")
-//  @JsonBackReference
-//  private ExerciseCommentEntity exerciseComment;
-
 
 
   @Override

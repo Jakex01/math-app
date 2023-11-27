@@ -47,20 +47,12 @@ public class ExerciseController {
         return ResponseEntity.ok(exerciseService.findExercisesFiltered(level, category, PageRequest.of(page,size)));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<ExerciseEntity>> findByIdExercise(
+    public ResponseEntity<Optional<ExerciseDto>> findByIdExercise(
             @PathVariable @NotNull Long id
     ){
         return ResponseEntity.ok(exerciseService.findByIdExercise(id));
     }
-    @PostMapping("/end-exec/{id}")
-    public ResponseEntity<?> calculateExcerciseTime(
-            @PathVariable @NotNull Long id
-    ){
 
-        exerciseService.setExerciseEndTime(id);
-
-        return ResponseEntity.accepted().build();
-    }
 
     @GetMapping("/{id}/comments")
     public ResponseEntity<Set<ExerciseCommentEntity>> findComments(@PathVariable @NotNull Long id){

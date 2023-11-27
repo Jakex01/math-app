@@ -4,6 +4,7 @@ package com.alibou.security.controller;
 
 import com.alibou.security.request.ChangePasswordRequest;
 import com.alibou.security.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class UserController {
 
     @PatchMapping("/pass")
     public ResponseEntity<?> changePassword(
-          @RequestBody ChangePasswordRequest request,
+          @RequestBody @Valid ChangePasswordRequest request,
           Principal connectedUser
     ) {
 

@@ -1,5 +1,6 @@
 package com.alibou.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ public class AnswerEntity {
 
     private boolean isCorrect;
 
-    @ManyToOne
-    @JoinColumn(name = "exercise_id", nullable = false)
-    private ExerciseEntity exercise;
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exercise_id")
+    private ExerciseEntity exercise1;
 }
